@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="C:/Users/banak/OneDrive/Dokumentumok/Spring/org.springframework.context-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="C:/Users/banak/OneDrive/Dokumentumok/Spring/org.springframework.asm-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="C:/Users/banak/OneDrive/Dokumentumok/Spring/org.springframework.expression-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="C:/Users/banak/OneDrive/Dokumentumok/Spring/mysql-connector-j-8.1.0/mysql-connector-j-8.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

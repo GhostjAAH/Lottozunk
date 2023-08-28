@@ -7,11 +7,13 @@
     	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   
 <bean id="huzasBean" class="pallas.lotto.Lottohuzas">
-	<property name ="MaxElem" value="100"/>
+	<property name ="maxHuzas" value="100"/>
+	<property name ="szamHuzas" value="5"/>
+	<property name ="szamig" value="90"/>
 </bean>  
 
 <bean id="szamokBean" class="pallas.lotto.Gyakoriszamok">
-<constructor-arg ref="huzasBean"/>
+	<property name ="hanyGyakori" value="3"/>
 </bean>
 
 <bean id="kiirBean" class="pallas.lotto.Szamkiiras">

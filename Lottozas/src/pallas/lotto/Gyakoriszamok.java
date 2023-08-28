@@ -1,53 +1,73 @@
 package pallas.lotto;
 
+import java.sql.*;
 import java.util.*;
 
 public class Gyakoriszamok {
 	
-	private Lottohuzas lottohuzas;
-	private List<Integer> legGyakszamok = new ArrayList<>();
-	
-	public Gyakoriszamok (Lottohuzas lottohuzas) {
-		this.lottohuzas = lottohuzas;
+	private int hanyGyakori;
+	private List<Integer> szamok = new ArrayList<>();
+		
+	public int getHanyGyakori() {
+		return hanyGyakori;
 	}
-	public Gyakoriszamok() {
+	public void setHanyGyakori(int hanyGyakori) {
+		this.hanyGyakori = hanyGyakori;
 	}
-	
-	public List<Integer> getLegGyakszamok() {
-		return legGyakszamok;
+	public List<Integer> getSzamok() {
+		return szamok;
 	}
-	public void setLegGyakszamok(List<Integer> legGyakszamok) {
-		this.legGyakszamok = legGyakszamok;
+	public void setSzamok(List<Integer> szamok) {
+		this.szamok = szamok;
 	}
 	
 	public void szamGyujtes() {	
-		List<Integer> szamokLista = lottohuzas.getSzamok();
-		
-		Map<Integer, Integer> elofordulasMap = new HashMap<>();
-		
-		for (int szam : szamokLista) {
-			//Beletesszük a számokat a HashMap-be, úgy, hogy;
-			//Ha már van ilyen szám, akkor a hozzá tartozó key előfordulását 1-gyel növeli,
-			//Ha még nincs, akkor beállítja a számhoz tartozó key előfordulását 1-re és beleteszi a HashMap-be.
-			elofordulasMap.put(szam, elofordulasMap.getOrDefault(szam, 0)+1);
-		}
-		while (legGyakszamok.size() < 3) {
-			//Megkeressük a legnagyobb előfordulást a Collections.max metódussal és elmentjük
-			int maxElofordulasok = Collections.max(elofordulasMap.values());
+		szamok.clear();
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/lottozas","root", "");
+			PreparedStatement preparedStatement = connection.prepareStatement
+					("SELECT szam, COUNT(*) AS szam_count " +
+		            "FROM (" +
+		            "   SELECT szam1 AS szam FROM lotto_szamok " +
+		            "   UNION ALL " +
+		            "   SELECT szam2 AS szam FROM lotto_szamok " +
+		            "   UNION ALL " +
+		            "   SELECT szam3 AS szam FROM lotto_szamok " +
+		            "   UNION ALL " +
+		            "   SELECT szam4 AS szam FROM lotto_szamok " +
+		            "   UNION ALL " +
+		            "   SELECT szam5 AS szam FROM lotto_szamok" +
+		            ") AS all_numbers " +
+		            "GROUP BY szam " +
+		            "ORDER BY szam_count DESC");
+			ResultSet eredmenyek = preparedStatement.executeQuery();
 			
-			int legGyakoriSzam = 0;
-			//Végigmegyünk a HashMap kulcs-érték párokon
-			for(Map.Entry<Integer, Integer> entry : elofordulasMap.entrySet()) {
-				//Ha a számhoz(kulcs) tartozó érték(value) megegyezik a maxElofordulasok-ban lévő értékkel->
-				if (entry.getValue() == maxElofordulasok) {
-					//->Az értékhez(value) tartozó kulcsot(számot) elmenti és belerakja a listába
-					legGyakoriSzam = entry.getKey();
-					legGyakszamok.add(legGyakoriSzam);
-					//A végén kitörli a HashMapból, hogy a következő iterációnál ne zavarjon
-					elofordulasMap.remove(legGyakoriSzam);
-					break;
-				}
+			int elozoSzamcount = -1;
+			int szamSzamlalo = 0;
+			
+			while(eredmenyek.next()) {
+				
+				int szamCount = eredmenyek.getInt("szam_count");
+				int szam = eredmenyek.getInt("szam");
+				  
+				if (szamCount != elozoSzamcount && szamSzamlalo > hanyGyakori) {
+			    	break;
+			    }
+			    if (szamCount != elozoSzamcount && szamSzamlalo <= hanyGyakori) {
+			        elozoSzamcount = szamCount;
+			        szamok.add(szam);
+			        szamSzamlalo++;
+			    } else {
+			        szamok.add(szam);
+			        szamSzamlalo++;
+			    }    
 			}
+			preparedStatement.close();
+			connection.close();
+		}
+		catch (SQLException e) {
+			System.out.println("Gyakoriszamok not gud");
+			e.printStackTrace();
 		}
 	}
 }
