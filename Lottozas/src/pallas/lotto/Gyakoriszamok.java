@@ -4,10 +4,8 @@ import java.sql.*;
 import java.util.*;
 
 public class Gyakoriszamok {
-	
 	private int hanyGyakori;
 	private List<Integer> szamok = new ArrayList<>();
-		
 	public int getHanyGyakori() {
 		return hanyGyakori;
 	}
@@ -41,15 +39,12 @@ public class Gyakoriszamok {
 		            "GROUP BY szam " +
 		            "ORDER BY szam_count DESC");
 			ResultSet eredmenyek = preparedStatement.executeQuery();
-			
 			int elozoSzamcount = -1;
 			int szamSzamlalo = 0;
-			
 			while(eredmenyek.next()) {
 				
 				int szamCount = eredmenyek.getInt("szam_count");
 				int szam = eredmenyek.getInt("szam");
-				  
 				if (szamCount != elozoSzamcount && szamSzamlalo > hanyGyakori) {
 			    	break;
 			    }

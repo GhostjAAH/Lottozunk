@@ -42,7 +42,6 @@ public class Lottohuzas {
 				}//Összegyüjtöm a húzott számokat egy listába
 				huzas.add(huzasSzam);
 			}
-			
 			try {
 				Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/lottozas","root", "");
 				PreparedStatement preparedStatement;

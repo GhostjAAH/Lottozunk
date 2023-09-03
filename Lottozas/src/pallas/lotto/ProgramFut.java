@@ -84,7 +84,7 @@ public class ProgramFut {
                 System.out.println("Kilepes...");
                 break;
             default:
-                System.out.println("Adj meg egy jo erteket 1-4-ig!\n");
+                System.out.println("Adj meg egy jo erteket 1-5-ig!\n");
                 break;
 			}
 		} while (valasztas !=5);

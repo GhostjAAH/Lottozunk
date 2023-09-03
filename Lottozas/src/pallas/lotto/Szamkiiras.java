@@ -18,6 +18,7 @@ public class Szamkiiras {
 	}
 	public Szamkiiras() {
 	}
+	
 	public void szamKiiras() {
 		
 		vegsoSzamok = gyakszamok.getSzamok();

@@ -19,5 +19,4 @@
 <bean id="kiirBean" class="pallas.lotto.Szamkiiras">
 <constructor-arg ref="szamokBean"/>
 </bean>
-
 </beans>
